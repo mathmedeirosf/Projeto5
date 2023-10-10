@@ -7,29 +7,7 @@ type TarefaState = {
 }
 
 const initialState: TarefaState = {
-  itens: [
-    {
-      id: 1,
-      descricao: 'Estudar JavaScript revendo o exercício do módulo 7',
-      prioridade: enums.Prioridade.NORMAL,
-      status: enums.Status.CONCLUIDA,
-      titulo: 'Estudar JavaScript'
-    },
-    {
-      id: 2,
-      descricao: 'Estudar material de apoio',
-      prioridade: enums.Prioridade.NORMAL,
-      status: enums.Status.PENDENTE,
-      titulo: 'Estudar TypeScript'
-    },
-    {
-      id: 3,
-      descricao: 'Praticar a construção de uma landing page',
-      prioridade: enums.Prioridade.IMPORTANTE,
-      status: enums.Status.PENDENTE,
-      titulo: 'Estudar Bootstrap'
-    }
-  ]
+  itens: []
 }
 
 const tarefasSlice = createSlice({
@@ -50,7 +28,7 @@ const tarefasSlice = createSlice({
         state.itens[indexDaTarefa] = action.payload
       }
     },
-    cadastrar: (state, action: PayloadAction<Tarefa>) => {
+    cadastrar: (state, action: PayloadAction<Omit<Tarefa, 'id'>>) => {
       const tarefaExiste = state.itens.find(
         (tarefa) =>
           tarefa.titulo.toLowerCase() === action.payload.titulo.toLowerCase()
@@ -59,7 +37,12 @@ const tarefasSlice = createSlice({
       if (tarefaExiste) {
         alert('Já existe uma tarefa com esse nome')
       } else {
-        state.itens.push(action.payload)
+        const ultimaTarefa = state.itens[state.itens.length - 1]
+        const tarefaNova = {
+          ...action.payload,
+          id: ultimaTarefa ? ultimaTarefa.id + 1 : 1
+        }
+        state.itens.push(tarefaNova)
       }
     },
     alteraStatus: (
