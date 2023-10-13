@@ -51,8 +51,12 @@ const Contato = ({
     setNome(nomeOriginal)
   }
 
-  function bloquearContato() {
-    setStatus(enums.Status.BLOQUEADO)
+  function BloquearContato() {
+    const novoStatus =
+      status === enums.Status.BLOQUEADO
+        ? enums.Status.DESBLOQUEADO
+        : enums.Status.BLOQUEADO
+    setStatus(novoStatus)
     setEditado(true)
   }
 
@@ -62,7 +66,7 @@ const Contato = ({
         <S.Titulo>
           Nome: {nome} <br />
           E-mail: {email} <br />
-          Nome: {numero}
+          Número: {numero}
         </S.Titulo>
       </label>
       <S.Tag parametro="prioridade" prioridade={prioridade}>
@@ -136,7 +140,11 @@ const Contato = ({
             <S.BotaoCancelarRemover onClick={cancelarEdicao}>
               Cancelar
             </S.BotaoCancelarRemover>
-            {!editado && <Botao onClick={bloquearContato}>Bloquear</Botao>}
+            {!editado && (
+              <Botao onClick={BloquearContato}>
+                {status === enums.Status.BLOQUEADO ? 'Desbloquear' : 'Bloquear'}
+              </Botao>
+            )}
           </>
         ) : (
           <>
