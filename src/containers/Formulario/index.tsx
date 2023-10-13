@@ -2,7 +2,7 @@ import { FormEvent, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
-import { BotaoSalvar, MainContainer, Titulo } from '../../styles'
+import { BotaoSalvar, MainContainer, Nome } from '../../styles'
 import { Campo } from '../../styles'
 import { Form, Opcoes, Opcao } from './styles'
 import * as enums from '../../utils/enums/Tarefa'
@@ -12,7 +12,9 @@ const Formulario = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const [titulo, setTitulo] = useState('')
+  const [nome, setNome] = useState('')
+  const [email, setEmail] = useState('')
+  const [numero, setNumero] = useState('')
   const [descricao, setDescricao] = useState('')
   const [prioridade, setPrioridade] = useState(enums.Prioridade.NORMAL)
 
@@ -21,10 +23,12 @@ const Formulario = () => {
 
     dispatch(
       cadastrar({
-        titulo,
+        nome,
+        email,
+        numero,
         prioridade,
         descricao,
-        status: enums.Status.PENDENTE
+        status: enums.Status.DESBLOQUEADO
       })
     )
     navigate('/')
@@ -32,19 +36,31 @@ const Formulario = () => {
 
   return (
     <MainContainer>
-      <Titulo>Nova tarefa</Titulo>
+      <Nome>Novo contato</Nome>
       <Form onSubmit={cadastrarTarefa}>
         <Campo
-          value={titulo}
-          onChange={({ target }) => setTitulo(target.value)}
+          value={nome}
+          onChange={({ target }) => setNome(target.value)}
           type="text"
-          placeholder="Título"
+          placeholder="Nome"
+        />
+        <Campo
+          value={email}
+          onChange={({ target }) => setEmail(target.value)}
+          type="text"
+          placeholder="E-mail"
+        />
+        <Campo
+          value={numero}
+          onChange={({ target }) => setNumero(target.value)}
+          type="text"
+          placeholder="Número"
         />
         <Campo
           value={descricao}
           onChange={({ target }) => setDescricao(target.value)}
           as="textarea"
-          placeholder="Descrição da tarefa"
+          placeholder="Descrição do contato"
         />
         <Opcoes>
           <p>Prioridade</p>

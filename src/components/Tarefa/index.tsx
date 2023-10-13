@@ -3,15 +3,17 @@ import { useDispatch } from 'react-redux'
 
 import * as S from './styles'
 import { remover, editar, alteraStatus } from '../../store/reducers/tarefas'
-import TarefaClass from '../../models/Tarefa'
+import ContatoClass from '../../models/Tarefa'
 import { Botao, BotaoSalvar } from '../../styles'
 
 import * as enums from '../../utils/enums/Tarefa'
 
-type Props = TarefaClass
+type Props = ContatoClass
 
-const Tarefa = ({
-  titulo,
+const Contato = ({
+  nome,
+  email,
+  numero,
   prioridade,
   status,
   descricao: descricaoOriginal,
@@ -40,16 +42,22 @@ const Tarefa = ({
 
   return (
     <S.Card>
-      <label htmlFor={titulo}>
+      <label htmlFor={nome}>
         <input
           type="checkbox"
-          id={titulo}
-          checked={status === enums.Status.CONCLUIDA}
+          id={nome}
+          checked={status === enums.Status.DESBLOQUEADO}
           onChange={alteraStatusTarefa}
         />
         <S.Titulo>
           {estaEditando && <em>Editando: </em>}
-          {titulo}
+          {nome}
+          <br />
+          <br />
+          {email}
+          <br />
+          <br />
+          {numero}
         </S.Titulo>
       </label>
       <S.Tag parametro="prioridade" prioridade={prioridade}>
@@ -70,7 +78,9 @@ const Tarefa = ({
               onClick={() => {
                 dispatch(
                   editar({
-                    titulo,
+                    nome,
+                    email,
+                    numero,
                     prioridade,
                     status,
                     descricao,
@@ -99,7 +109,7 @@ const Tarefa = ({
   )
 }
 
-export default Tarefa
+export default Contato
 
 /*
 

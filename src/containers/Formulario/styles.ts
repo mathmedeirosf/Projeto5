@@ -15,6 +15,7 @@ export const Form = styled.form`
 
 export const Opcoes = styled.div`
   margin-bottom: 16px;
+  margin: 8px 0;
 
   p {
     margin-bottom: 6px;

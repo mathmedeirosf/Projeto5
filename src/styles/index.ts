@@ -22,7 +22,7 @@ export const MainContainer = styled.main`
   overflow-y: scroll;
 `
 
-export const Titulo = styled.h2`
+export const Nome = styled.h2`
   font-size: 18px;
   display: block;
   margin-top: 40px;
@@ -38,6 +38,7 @@ export const Campo = styled.input`
   color: #666666;
   border-color: #666666;
   width: 100%;
+  margin-bottom: 8px;
 `
 
 export const Botao = styled.button`
