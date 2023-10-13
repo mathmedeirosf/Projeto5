@@ -39,6 +39,7 @@ export const Titulo = styled.h3`
   font-size: 14px;
   font-weight: bold;
   margin-left: 8px;
+  line-height: 24px;
 `
 
 export const Tag = styled.span<TagProps>`

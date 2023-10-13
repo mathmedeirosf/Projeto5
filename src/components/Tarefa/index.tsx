@@ -59,9 +59,11 @@ const Contato = ({
   return (
     <S.Card>
       <label htmlFor={nome}>
-        <S.Titulo>Nome: {nome}</S.Titulo>
-        <S.Titulo>- E-mail: {email}</S.Titulo>
-        <S.Titulo>- Número: {numero}</S.Titulo>
+        <S.Titulo>
+          Nome: {nome} <br />
+          E-mail: {email} <br />
+          Nome: {numero}
+        </S.Titulo>
       </label>
       <S.Tag parametro="prioridade" prioridade={prioridade}>
         {prioridade}
