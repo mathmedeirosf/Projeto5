@@ -12,12 +12,11 @@ type TagProps = {
 
 function retornaCorDeFundo(props: TagProps): string {
   if (props.parametro === 'prioridade') {
-    if (props.prioridade === enums.Prioridade.FAVORITO)
-      return variaveis.vermelho
-    return variaveis.amarelo2
+    if (props.prioridade === enums.Prioridade.FAVORITO) return variaveis.amarelo
+    return variaveis.verde
   } else {
-    if (props.status === enums.Status.DESBLOQUEADO) return variaveis.amarelo
-    if (props.status === enums.Status.BLOQUEADO) return variaveis.verde
+    if (props.status === enums.Status.DESBLOQUEADO) return variaveis.verde
+    if (props.status === enums.Status.BLOQUEADO) return variaveis.vermelho
   }
   return '#ccc'
 }
@@ -51,6 +50,7 @@ export const Tag = styled.span<TagProps>`
   border-radius: 8px;
   margin-right: 16px;
   display: inline-block;
+  margin-bottom: 12px;
 `
 
 export const Descricao = styled.textarea`
@@ -61,6 +61,17 @@ export const Descricao = styled.textarea`
   display: block;
   width: 100%;
   margin-top: 16px;
+  resize: none;
+  border: none;
+  background-color: transparent;
+`
+
+export const Infos = styled.textarea`
+  color: #8b8b8b8;
+  font-size: 14px;
+  font-famaly: 'Roboto Mono', monospace;
+  display: block;
+  width: 100%;
   resize: none;
   border: none;
   background-color: transparent;

@@ -1,8 +1,8 @@
-import { useState, useEffect, ChangeEvent } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
 import * as S from './styles'
-import { remover, editar, alteraStatus } from '../../store/reducers/tarefas'
+import { remover, editar } from '../../store/reducers/tarefas'
 import ContatoClass from '../../models/Tarefa'
 import { Botao, BotaoSalvar } from '../../styles'
 
@@ -11,54 +11,57 @@ import * as enums from '../../utils/enums/Tarefa'
 type Props = ContatoClass
 
 const Contato = ({
-  nome,
-  email,
-  numero,
+  nome: nomeOriginal,
+  email: emailOriginal,
+  numero: numeroOriginal,
   prioridade,
-  status,
+  status: statusOriginal,
   descricao: descricaoOriginal,
   id
 }: Props) => {
   const dispatch = useDispatch()
   const [estaEditando, setEstaEditando] = useState(false)
+  const [editado, setEditado] = useState(false)
   const [descricao, setDescricao] = useState('')
+  const [email, setEmail] = useState('')
+  const [numero, setNumero] = useState(numeroOriginal)
+  const [nome, setNome] = useState(nomeOriginal)
+  const [status, setStatus] = useState(statusOriginal)
 
   useEffect(() => {
-    if (descricaoOriginal.length > 0) {
+    if (
+      descricaoOriginal.length > 0 &&
+      emailOriginal.length > 0 &&
+      numeroOriginal.length > 0 &&
+      nomeOriginal.length > 0
+    ) {
       setDescricao(descricaoOriginal)
+      setEmail(emailOriginal)
+      setNumero(numeroOriginal)
+      setNome(numeroOriginal)
     }
-  }, [descricaoOriginal])
+  }, [descricaoOriginal, emailOriginal, numeroOriginal, nomeOriginal])
 
   function cancelarEdicao() {
     setEstaEditando(false)
     setDescricao(descricaoOriginal)
+    setEmail(emailOriginal)
+    setNumero(numeroOriginal)
+    setStatus(statusOriginal || enums.Status.DESBLOQUEADO)
+    setNome(nomeOriginal)
   }
 
-  function alteraStatusTarefa(evento: ChangeEvent<HTMLInputElement>) {
-    console.log(evento.target.checked)
-
-    dispatch(alteraStatus({ id, finalizado: evento.target.checked }))
+  function bloquearContato() {
+    setStatus(enums.Status.BLOQUEADO)
+    setEditado(true)
   }
 
   return (
     <S.Card>
       <label htmlFor={nome}>
-        <input
-          type="checkbox"
-          id={nome}
-          checked={status === enums.Status.DESBLOQUEADO}
-          onChange={alteraStatusTarefa}
-        />
-        <S.Titulo>
-          {estaEditando && <em>Editando: </em>}
-          {nome}
-          <br />
-          <br />
-          {email}
-          <br />
-          <br />
-          {numero}
-        </S.Titulo>
+        <S.Titulo>Nome: {nome}</S.Titulo>
+        <S.Titulo>- E-mail: {email}</S.Titulo>
+        <S.Titulo>- Número: {numero}</S.Titulo>
       </label>
       <S.Tag parametro="prioridade" prioridade={prioridade}>
         {prioridade}
@@ -66,11 +69,47 @@ const Contato = ({
       <S.Tag parametro="status" status={status}>
         {status}
       </S.Tag>
-      <S.Descricao
-        disabled={!estaEditando}
-        value={descricao}
-        onChange={(evento) => setDescricao(evento.target.value)}
-      />
+      <div>
+        <label htmlFor={`descricao-${nome}`}>Descrição:</label>
+        <S.Infos
+          id={`descricao-${nome}`}
+          disabled={!estaEditando}
+          value={descricao}
+          onChange={(evento) => setDescricao(evento.target.value)}
+        />
+      </div>
+      {estaEditando && (
+        <>
+          <div>
+            <label htmlFor={`nome-${nome}`}>Nome:</label>
+            <S.Infos
+              id={`nome-${nome}`}
+              disabled={!estaEditando}
+              value={nome}
+              onChange={(evento) => setNome(evento.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor={`email-${nome}`}>E-mail:</label>
+            <S.Infos
+              id={`email-${nome}`}
+              disabled={!estaEditando}
+              value={email}
+              onChange={(evento) => setEmail(evento.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor={`numero-${nome}`}>Número:</label>
+            <S.Infos
+              id={`numero-${nome}`}
+              disabled={!estaEditando}
+              value={numero}
+              onChange={(evento) => setNumero(evento.target.value)}
+            />
+          </div>
+        </>
+      )}
+
       <S.BarraAcoes>
         {estaEditando ? (
           <>
@@ -95,6 +134,7 @@ const Contato = ({
             <S.BotaoCancelarRemover onClick={cancelarEdicao}>
               Cancelar
             </S.BotaoCancelarRemover>
+            {!editado && <Botao onClick={bloquearContato}>Bloquear</Botao>}
           </>
         ) : (
           <>
@@ -110,19 +150,3 @@ const Contato = ({
 }
 
 export default Contato
-
-/*
-
-====== Controlled components ======
-
-[nome, setNome] = useState('')
-
-<input value={nome} onChange={e => setNome{e.target.value}} />
-
-====== Uncontrolled components ======
-
-[nome, setNome] = useState('')
-
-<input onChange={e => setNome{e.target.value}} />
-
-*/
